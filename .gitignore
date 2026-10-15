@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+build/
+dist/
+
+# Data and environment secrets
+.env
+.env.*
+!.env.example
+*.csv
+archive/
+
+# Notebook outputs / local IDE
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Keep the small pretrained models required by the web app
+*.pkl
+!models/
+!models/*.pkl

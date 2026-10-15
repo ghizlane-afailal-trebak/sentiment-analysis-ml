@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Analytics - تحليل المشاعر</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="animated-bg">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-shape shape-4"></div>
+    </div>
+    
+    <!-- Header Minimaliste -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="#4A90E2"/>
+                        <path d="M16 10L20 14L16 18M12 14H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">IA Analytics</span>
+            </div>
+            <button class="header-action-btn" onclick="scrollToAnalysis()">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 2L3 6V15H8V10H10V15H15V6L9 2Z" fill="currentColor"/>
+                </svg>
+                تحليل جديد
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Dashboard Section -->
+        <section class="dashboard-section">
+            <h2 class="dashboard-title">لوحة التحكم</h2>
+            
+            <!-- Indicateurs de Sentiment -->
+            <div class="indicators-grid">
+                <div class="indicator-card positive">
+                    <div class="indicator-header">
+                        <svg class="indicator-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="indicator-label">إيجابي</span>
+                    </div>
+                    <div class="indicator-value" id="positive-count">0</div>
+                    <div class="indicator-bar positive-bar" id="positive-indicator-bar"></div>
+                </div>
+                
+                <div class="indicator-card negative">
+                    <div class="indicator-header">
+                        <svg class="indicator-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 8l8 8M16 8l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="indicator-label">سلبي</span>
+                    </div>
+                    <div class="indicator-value" id="negative-count">0</div>
+                    <div class="indicator-bar negative-bar" id="negative-indicator-bar"></div>
+                </div>
+            </div>
+
+            <!-- Graphiques de Statistiques -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3 class="chart-title">توزيع المشاعر</h3>
+                    <div class="horizontal-bars">
+                        <div class="bar-item">
+                            <div class="bar-header">
+                                <span class="bar-label">إيجابي</span>
+                                <span class="bar-percentage" id="positive-percent">0%</span>
+                            </div>
+                            <div class="bar-wrapper">
+                                <div class="bar-fill positive-fill" id="positive-bar"></div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-header">
+                                <span class="bar-label">سلبي</span>
+                                <span class="bar-percentage" id="negative-percent">0%</span>
+                            </div>
+                            <div class="bar-wrapper">
+                                <div class="bar-fill negative-fill" id="negative-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Section -->
+        <section class="analysis-section" id="analysis-section">
+            <div class="analysis-card">
+                <div class="card-header">
+                    <h2 class="card-title">تحليل نصي جديد</h2>
+                    <div class="ai-badge">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="6" fill="currentColor"/>
+                        </svg>
+                        <span>مدعوم بالذكاء الاصطناعي</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tweet-input" class="form-label">أدخل التغريدة للتحليل</label>
+                    <textarea 
+                        id="tweet-input" 
+                        class="form-textarea"
+                        placeholder="اكتب التغريدة باللغة العربية هنا..."
+                        rows="6"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="model-select" class="form-label">اختر نموذج الذكاء الاصطناعي</label>
+                    <select id="model-select" class="form-select">
+                        <option value="naive_bayes">Naive Bayes</option>
+                        <option value="adaboost">AdaBoost</option>
+                    </select>
+                </div>
+
+                <button id="analyze-btn" class="btn-primary" onclick="analyzeSentiment()">
+                    <span class="btn-text">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L3 7V17H8V12H12V17H17V7L10 2Z" fill="currentColor"/>
+                        </svg>
+                        تحليل المشاعر
+                    </span>
+                    <span class="btn-loader" style="display: none;">
+                        <span class="loader-spinner"></span>
+                        جاري التحليل...
+                    </span>
+                </button>
+
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section" style="display: none;">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3 class="result-title">نتائج التحليل</h3>
+                    </div>
+
+                    <div class="result-content">
+                        <div class="sentiment-result">
+                            <div class="sentiment-icon-large" id="sentiment-icon"></div>
+                            <div class="sentiment-info">
+                                <span class="sentiment-label">الحكم</span>
+                                <span id="sentiment-text" class="sentiment-text-large"></span>
+                            </div>
+                        </div>
+
+                        <div class="probability-section">
+                            <div class="probability-header">
+                                <span class="probability-label">مستوى الثقة</span>
+                                <span id="probability-value" class="probability-value-large"></span>
+                            </div>
+                            <div class="probability-bar-wrapper">
+                                <div id="probability-bar-fill" class="probability-bar-fill"></div>
+                            </div>
+                        </div>
+
+                        <div class="processed-text-section">
+                            <div class="processed-header">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <path d="M9 2L3 6V15H8V10H10V15H15V6L9 2Z" fill="currentColor"/>
+                                </svg>
+                                <span>النص بعد المعالجة</span>
+                            </div>
+                            <p id="processed-text-content" class="processed-text-content"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Mascot -->
+    <div class="ai-mascot">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="45" fill="#4A90E2" opacity="0.1"/>
+            <circle cx="50" cy="40" r="20" fill="#4A90E2"/>
+            <circle cx="43" cy="38" r="2" fill="white"/>
+            <circle cx="57" cy="38" r="2" fill="white"/>
+            <path d="M45 48Q50 52 55 48" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <rect x="38" y="60" width="24" height="30" rx="12" fill="#4A90E2"/>
+        </svg>
+    </div>
+
+    <script>
+        let analysisHistory = {
+            positive: 0,
+            negative: 0
+        };
+
+        function scrollToAnalysis() {
+            document.getElementById('analysis-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateDashboard(sentiment) {
+            if (sentiment === 'positive') {
+                analysisHistory.positive++;
+            } else if (sentiment === 'negative') {
+                analysisHistory.negative++;
+            }
+
+            const total = analysisHistory.positive + analysisHistory.negative;
+            
+            if (total > 0) {
+                const positivePercent = (analysisHistory.positive / total * 100).toFixed(0);
+                const negativePercent = (analysisHistory.negative / total * 100).toFixed(0);
+
+                // Update counts
+                document.getElementById('positive-count').textContent = analysisHistory.positive;
+                document.getElementById('negative-count').textContent = analysisHistory.negative;
+
+                // Update percentages
+                document.getElementById('positive-percent').textContent = positivePercent + '%';
+                document.getElementById('negative-percent').textContent = negativePercent + '%';
+
+                // Update bars
+                setTimeout(() => {
+                    document.getElementById('positive-bar').style.width = positivePercent + '%';
+                    document.getElementById('negative-bar').style.width = negativePercent + '%';
+                    document.getElementById('positive-indicator-bar').style.width = positivePercent + '%';
+                    document.getElementById('negative-indicator-bar').style.width = negativePercent + '%';
+                }, 100);
+            }
+        }
+
+        async function analyzeSentiment() {
+            const tweetInput = document.getElementById('tweet-input');
+            const modelSelect = document.getElementById('model-select');
+            const resultsSection = document.getElementById('results');
+            const errorMessage = document.getElementById('error-message');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const btnText = analyzeBtn.querySelector('.btn-text');
+            const btnLoader = analyzeBtn.querySelector('.btn-loader');
+
+            const tweet = tweetInput.value.trim();
+
+            if (!tweet) {
+                showError('الرجاء إدخال تغريدة للتحليل');
+                return;
+            }
+
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-flex';
+            analyzeBtn.disabled = true;
+            errorMessage.style.display = 'none';
+            resultsSection.style.display = 'none';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tweet: tweet,
+                        model: modelSelect.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'حدث خطأ أثناء التحليل');
+                }
+
+                setTimeout(() => {
+                    displayResults(data);
+                    updateDashboard(data.sentiment);
+                }, 300);
+
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                btnText.style.display = 'inline-flex';
+                btnLoader.style.display = 'none';
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        function displayResults(data) {
+            const resultsSection = document.getElementById('results');
+            const sentimentText = document.getElementById('sentiment-text');
+            const sentimentIcon = document.getElementById('sentiment-icon');
+            const probabilityValue = document.getElementById('probability-value');
+            const probabilityBarFill = document.getElementById('probability-bar-fill');
+            const processedTextContent = document.getElementById('processed-text-content');
+
+            const sentiment = data.sentiment;
+            const isPositive = sentiment === 'positive';
+            const probability = parseFloat(data.probability);
+
+            sentimentText.textContent = isPositive ? 'إيجابي' : 'سلبي';
+            sentimentText.className = `sentiment-text-large ${isPositive ? 'positive' : 'negative'}`;
+            
+            sentimentIcon.innerHTML = isPositive 
+                ? '<svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="24" fill="#10B981"/><path d="M18 28L24 34L38 20" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>'
+                : '<svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="24" fill="#EF4444"/><path d="M20 20L36 36M36 20L20 36" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>';
+            sentimentIcon.className = `sentiment-icon-large ${isPositive ? 'positive' : 'negative'}`;
+
+            probabilityValue.textContent = probability.toFixed(1) + '%';
+            probabilityValue.className = `probability-value-large ${isPositive ? 'positive' : 'negative'}`;
+
+            probabilityBarFill.style.width = '0%';
+            probabilityBarFill.className = `probability-bar-fill ${isPositive ? 'positive' : 'negative'}`;
+
+            setTimeout(() => {
+                probabilityBarFill.style.width = `${probability}%`;
+                animateNumber(probabilityValue, 0, probability, 1000);
+            }, 100);
+
+            processedTextContent.textContent = data.processed_text || 'غير متاح';
+
+            resultsSection.style.display = 'block';
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+
+        function animateNumber(element, start, end, duration) {
+            const range = end - start;
+            const steps = 60;
+            const increment = range / steps;
+            const stepTime = duration / steps;
+            let step = 0;
+
+            const timer = setInterval(() => {
+                step++;
+                const current = start + (increment * step);
+                const displayValue = Math.min(current, end);
+                element.textContent = displayValue.toFixed(1) + '%';
+                if (step >= steps || current >= end) {
+                    clearInterval(timer);
+                    element.textContent = end.toFixed(1) + '%';
+                }
+            }, stepTime);
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = '⚠️ ' + message;
+            errorMessage.style.display = 'block';
+        }
+
+        document.getElementById('tweet-input').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                analyzeSentiment();
+            }
+        });
+    </script>
+</body>
+</html>
